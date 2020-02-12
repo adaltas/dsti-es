@@ -1,0 +1,11 @@
+metricbeat.modules:
+- module: apache
+  metricsets: ["status"]
+  period: 10s
+  enabled: true
+
+  # Apache hosts
+  hosts: ["http://apache:8080"]
+
+output.elasticsearch:
+  hosts: ["http://elasticsearch:9200"]

@@ -1,5 +1,5 @@
 version: "2"
-services: 
+services:
   apache:
     image: httpd:2.4
     ports:
@@ -7,27 +7,31 @@ services:
     volumes:
       - "apache-logs:/var/log/apache2"
       - "./httpd.conf:/usr/local/apache2/conf/httpd.conf"
-  # elasticsearch:
-  #   image: docker.elastic.co/elasticsearch/elasticsearch:7.6.0
-  #   ports:
-  #     - 9200:9200
-  #     - 9300:9300
-  #   environment: 
-  #     - "discovery.type=single-node"
-  # kibana:
-  #   image: docker.elastic.co/kibana/kibana:7.6.0
-  #   ports:
-  #    - 5601:5601
-  #   environment: 
-  #    - 'ES_HOSTS=elasticsearch:5600'
-  # filebeat:
-  #   image: docker.elastic.co/beats/filebeat:7.6.0
-  #   environment: 
-  #     - setup.kibana.host=kibana:5601
-  #     - "output.elasticsearch.hosts=elasticsearch:9200"
-  #   volumes:
-  #     - "apache-logs:/var/log/apache2:ro"
-  #     - "./filebeat.yml:/usr/share/filebeat/filebeat.yml:ro"
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.6.0
+    ports:
+      - 9200:9200
+      - 9300:9300
+    environment: 
+      - "discovery.type=single-node"
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.6.0
+    ports:
+     - 5601:5601
+    environment: 
+     - 'ES_HOSTS=elasticsearch:9200'
+  filebeat:
+    image: docker.elastic.co/beats/filebeat:7.6.0
+    environment:
+      - setup.kibana.host=kibana:5601
+      - "output.elasticsearch.hosts=elasticsearch:9200"
+    volumes:
+      - "apache-logs:/var/log/apache2:ro"
+      - "./filebeat.yml:/usr/share/filebeat/filebeat.yml:ro"
+  metricbeat:
+    image: docker.elastic.co/beats/metricbeat:7.6.0
+    volumes: 
+      - "./metricbeat.apache.yml:/usr/share/metricbeat/metricbeat.yml:ro"
   # server:
   #   image: docker.elastic.co/apm/apm-server:7.6.0
   #   container_name: apm-server
