@@ -1,0 +1,5 @@
+filebeat.modules:
+- module: apache
+
+output.elasticsearch:
+  hosts: ["http://elasticsearch:9200"]

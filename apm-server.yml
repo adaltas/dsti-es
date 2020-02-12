@@ -1,0 +1,28 @@
+# https://github.com/elastic/apm-server/blob/master/apm-server.yml
+apm-server:
+  host: "0.0.0.0:8200"
+  secret: "shud2oocei1ceibeiph8yeegaimuph4ahm9chid5aes9ao8z"
+
+setup.kibana:
+  host: "kibana:5601"
+
+output.elasticsearch:
+  hosts: ["elasticsearch:9200"]
+  username: "elastic"
+  password: "changeme"
+  indices:
+    - index: "apm-%{[beat.version]}-sourcemap"
+      when.contains:
+        processor.event: "sourcemap"
+
+    - index: "apm-%{[beat.version]}-error-%{+yyyy.MM.dd}"
+      when.contains:
+        processor.event: "error"
+
+    - index: "apm-%{[beat.version]}-transaction-%{+yyyy.MM.dd}"
+      when.contains:
+        processor.event: "transaction"
+
+    - index: "apm-%{[beat.version]}-span-%{+yyyy.MM.dd}"
+      when.contains:
+        processor.event: "span"
