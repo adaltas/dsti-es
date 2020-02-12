@@ -5,7 +5,7 @@ metricbeat.modules:
   enabled: true
 
   # Apache hosts
-  hosts: ["http://apache:8080"]
+  hosts: ["http://apache:80"]
 
 output.elasticsearch:
   hosts: ["http://elasticsearch:9200"]
